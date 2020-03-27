@@ -1,0 +1,15 @@
+@Library('reanplatform') _
+
+node {
+	withEnv(["PATH+TOOLS=/usr/local/helm-3.1.2/bin"]) {
+		withCredentials([
+			file(variable: 'KUBECONFIG', credentialsId: 'kubeconfig'),
+			usernamePassword(usernameVariable: 'ARTIFACTORY_USERNAME', passwordVariable: 'ARTIFACTORY_API_KEY', credentialsId: 'artifactory-edge')
+		]) {
+			appPipelines.appDestroy(
+				tools: ['terraform'],
+				provider: ['aws']
+			)
+		}
+	}
+}
